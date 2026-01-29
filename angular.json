@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "seamfix-angular-app": {
+    "seamfix-angular-app-project": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -56,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "seamfix-angular-app:build:production"
+              "buildTarget": "seamfix-angular-app-project:build:production"
             },
             "development": {
-              "buildTarget": "seamfix-angular-app:build:development"
+              "buildTarget": "seamfix-angular-app-project:build:development"
             }
           },
           "defaultConfiguration": "development"

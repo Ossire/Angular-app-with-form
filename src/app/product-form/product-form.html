@@ -1,0 +1,104 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="product-form">
+
+    <h2>Create Product</h2>
+
+
+    <label>
+        Name
+        <input type="text" formControlName="name" />
+    </label>
+    <div class="error" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+        <div *ngIf="form.get('name')?.errors?.['required']">Name is required.</div>
+        <div *ngIf="form.get('name')?.errors?.['minlength']">Minimum 3 characters.</div>
+    </div>
+
+
+    <label>
+        Description
+        <textarea formControlName="description" rows="4"></textarea>
+    </label>
+    <div class="error" *ngIf="form.get('description')?.touched && form.get('description')?.invalid">
+        <div *ngIf="form.get('description')?.errors?.['required']">Description is required.</div>
+        <div *ngIf="form.get('description')?.errors?.['minlength']">Minimum 10 characters.</div>
+    </div>
+
+
+    <label>
+        Price
+        <input type="number" formControlName="price" />
+    </label>
+    <div class="error" *ngIf="form.get('price')?.touched && form.get('price')?.invalid">
+        <div *ngIf="form.get('price')?.errors?.['required']">Price is required.</div>
+        <div *ngIf="form.get('price')?.errors?.['min']">Minimum price is 50.</div>
+    </div>
+
+
+    <label>
+        Category
+        <input type="text" formControlName="category" />
+    </label>
+    <div class="error" *ngIf="form.get('category')?.touched && form.get('category')?.invalid">
+        <div *ngIf="form.get('category')?.errors?.['required']">Category is required.</div>
+    </div>
+
+
+    <label>
+        Image URL
+        <input type="text" formControlName="imageUrl" />
+    </label>
+    <div class="error" *ngIf="form.get('imageUrl')?.touched && form.get('imageUrl')?.invalid">
+        <div *ngIf="form.get('imageUrl')?.errors?.['required']">Image URL required.</div>
+        <div *ngIf="form.get('imageUrl')?.errors?.['pattern']">Must be a valid URL (start with http(s)).</div>
+    </div>
+
+
+    <label class="checkbox">
+        <input type="checkbox" formControlName="inStock" /> In Stock
+    </label>
+
+
+    <label>
+        Rating (0 - 5)
+        <input type="number" formControlName="rating" min="0" max="5" />
+    </label>
+    <div class="error" *ngIf="form.get('rating')?.touched && form.get('rating')?.invalid">
+        <div *ngIf="form.get('rating')?.errors?.['min']">Minimum rating is 0</div>
+        <div *ngIf="form.get('rating')?.errors?.['max']">Maximum rating is 5</div>
+    </div>
+
+
+    <div formArrayName="properties" class="properties">
+        <h3>Properties</h3>
+
+        <div *ngFor="let prop of properties.controls; let i = index" [formGroupName]="i" class="property-row">
+            <label>
+                Color
+                <input formControlName="color" />
+            </label>
+            <label>
+                Weight
+                <input formControlName="weight" />
+            </label>
+
+            <div class="property-actions">
+                <button type="button" (click)="removeProperty(i)" [disabled]="properties.length === 1">Remove</button>
+            </div>
+
+            <div class="error small" *ngIf="prop.get('color')?.touched && prop.get('color')?.invalid">
+                <div *ngIf="prop.get('color')?.errors?.['required']">Color required</div>
+            </div>
+            <div class="error small" *ngIf="prop.get('weight')?.touched && prop.get('weight')?.invalid">
+                <div *ngIf="prop.get('weight')?.errors?.['required']">Weight required</div>
+            </div>
+        </div>
+
+        <button type="button" (click)="addProperty()">Add Property</button>
+    </div>
+
+
+    <div class="actions">
+        <button type="submit" [disabled]="form.invalid" class="submit-btn">Create Product</button>
+        <button type="button" (click)="router.navigate(['/products'])" class="cancel-btn">Cancel</button>
+    </div>
+
+</form>

@@ -1,19 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Searchinput } from '../searchinput/searchinput';
-import { Text } from '@angular/compiler';
+import { ProductService } from '../services/product-service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [Searchinput],
+  imports: [Searchinput, RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  @Input() cartCount = 0;
-  @Output() emitToApp = new EventEmitter<string>();
-
-  onEmitToApp(searchedString: string) {
-    this.emitToApp.emit(searchedString);
-  }
+  constructor(public productService: ProductService) {}
 }

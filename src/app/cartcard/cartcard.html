@@ -1,0 +1,10 @@
+<div class="cart-card">
+    <div class="cart-header">Items In Cart</div>
+    @for (product of productnames(); track product.id) {
+
+    <div class="cart-name">
+        {{product.name}}
+    </div>
+    }
+
+</div>

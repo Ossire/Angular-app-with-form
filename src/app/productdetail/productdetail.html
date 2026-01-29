@@ -1,0 +1,26 @@
+@if(loading()) {
+<div> loading.....</div>
+}
+@else if (error()) {
+<div>{{ error() }}</div>
+}
+
+@else if (product) {
+<div class="product-card">
+
+    <div class="product-image"><img [src]="product.imageUrl" class="product-link" /> </div>
+
+    <div class="product-content">
+        <h3 class="product-title">{{product.name}}</h3>
+        <p class="product-desc">{{product.description}}</p>
+
+        <span class="product-price">{{product.price}} </span>
+        <p class="product-desc">{{category}}</p>
+
+    </div>
+    <button class="add-to-cart-btn" (click)="addToCart(product)" [disabled]="productService.isInCart(product)">
+        {{productService.isInCart(product) ? "item already in cart" : "Add to Cart"}} </button>
+
+    <button class="add-to-cart-btn" (click)="removeFromCart(product.id)"> Delete </button>
+</div>
+}

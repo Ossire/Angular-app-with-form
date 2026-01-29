@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ProductService } from '../services/product-service';
 
 @Component({
   selector: 'app-searchinput',
@@ -9,10 +10,17 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './searchinput.css',
 })
 export class Searchinput {
-  searchedText = '';
-  @Output() emitSearchedText = new EventEmitter();
+  get searchedProduct(): string {
+    return this.productService.searchedProduct();
+  }
+
+  set searchedProduct(value: string) {
+    this.productService.searchedProduct.set(value);
+  }
+
+  constructor(private productService: ProductService) {}
 
   onSearchBegins() {
-    this.emitSearchedText.emit(this.searchedText);
+    this.productService.filterMyArrays();
   }
 }

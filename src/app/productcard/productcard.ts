@@ -1,21 +1,33 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-import { type Product } from '../app';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  Injectable,
+  OnInit,
+  computed,
+} from '@angular/core';
+import { ProductService } from '../services/product-service';
+import { Product } from '../models/model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-productcard',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './productcard.html',
   styleUrl: './productcard.css',
 })
-export class Productcard {
-  @Input() filtered!: Product[];
-  @Input() selectedProductId!: number | null;
-  @Output() addcart = new EventEmitter<Product>();
-  @Output() emitProductId = new EventEmitter<number>();
+export class Productcard implements OnInit {
+  myArray = computed(() => this.productService.filteredArray());
 
-  onEmitProductId(product: Product) {
-    this.emitProductId.emit(product.id);
+  constructor(public productService: ProductService) {}
+
+  ngOnInit(): void {
+    this.productService.getAllProducts();
+  }
+
+  addToCart(product: Product) {
+    this.productService.addToCart(product);
   }
 }
