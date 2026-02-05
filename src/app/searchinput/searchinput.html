@@ -1,4 +1,4 @@
 <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search products..." class="search-input"
-        [(ngModel)]="searchedProduct" (ngModelChange)="onSearchBegins()">
+    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" [(ngModel)]="text"
+        (ngModelChange)="onSearchBegins($event)">
 </div>

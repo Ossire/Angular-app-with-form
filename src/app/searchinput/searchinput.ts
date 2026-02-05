@@ -1,26 +1,19 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ProductService } from '../services/product-service';
+import { StateService } from '../services/state-service';
 
 @Component({
   selector: 'app-searchinput',
-  standalone: true,
   imports: [FormsModule],
   templateUrl: './searchinput.html',
   styleUrl: './searchinput.css',
 })
 export class Searchinput {
-  get searchedProduct(): string {
-    return this.productService.searchedProduct();
-  }
+  text = '';
 
-  set searchedProduct(value: string) {
-    this.productService.searchedProduct.set(value);
-  }
+  constructor(private stateService: StateService) {}
 
-  constructor(private productService: ProductService) {}
-
-  onSearchBegins() {
-    this.productService.filterMyArrays();
+  onSearchBegins(value: string) {
+    this.stateService.setSearchedText(value);
   }
 }

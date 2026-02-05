@@ -18,8 +18,8 @@
             <div class="cart">
 
                 <div class="cart-icon"><a routerLink="/cart" routerLinkActive="active-link">🛒</a> </div>
-                @if (productService.cartCount) {
-                <span id="cartCount" class="badge">{{productService.cartCount}}</span>
+                @if (cart$ | async; as cart) {
+                <span id="cartCount" class="badge">{{cart.length}}</span>
                 }
 
             </div>

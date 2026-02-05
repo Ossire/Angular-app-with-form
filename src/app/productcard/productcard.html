@@ -1,25 +1,48 @@
+@if (loading$ | async) {
+<div class="spinner-overlay">
+    <div class="spinner"></div>
+</div>
+}
+
+
+
+@else if (error$ | async; as errormessage) {
+<div class="error-message">
+    {{ errormessage }}
+    <button type="button" class="retry-btn" (click)="reTry()">Retry</button>
+</div>
+}
+
+@else if (products$ | async; as products) {
 <div class="product-grid">
-    @for (product of myArray(); track product.id) {
-
-
+    @for (product of products; track product.id) {
     <div class="product-card">
 
-        <a [routerLink]="['/products', product.id]" [queryParams]="{category: product.category}">
-            <div class="product-image"><img [src]="product.imageUrl" class="product-link" /> </div>
+        <a [routerLink]="['/products', product.id]" [queryParams]="{ category: product.category }">
+            <div class="product-image">
+                <img [src]="product.imageUrl" class="product-link" />
+            </div>
 
             <div class="product-content">
-                <h3 class="product-title">{{product.name}}</h3>
-                <p class="product-desc">{{product.description}}</p>
-
-                <span class="product-price">{{product.price}} </span>
-
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-desc">{{ product.description }}</p>
+                <span class="product-price">{{ product.price }}</span>
             </div>
         </a>
-        <button class="add-to-cart-btn" (click)="addToCart(product)" [disabled]="productService.isInCart(product)">
-            {{productService.isInCart(product) ? "item already in cart" : "Add to Cart"}} </button>
+
+        @if (!stateService.setIsItInCart(product.id)) {
+        <button class="add-to-cart-btn" (click)="addToCart(product)">
+            Add To cart
+        </button>
+        }
+
+        @if (stateService.setIsItInCart(product.id)) {
+        <button class="remove-from-cart-btn" (click)="remove(product.id)">
+            Remove from cart
+        </button>
+        }
+
     </div>
-
     }
-
-
 </div>
+}

@@ -1,11 +1,22 @@
-@if(loading()) {
-<div> loading.....</div>
-}
-@else if (error()) {
-<div>{{ error() }}</div>
+@if (loading$ | async) {
+<div class="spinner-overlay">
+    <div class="spinner"></div>
+</div>
 }
 
-@else if (product) {
+
+
+@else if (error$ | async; as error ){
+
+<div class="error-message"> {{error}}
+    <button (click)="reTry(productId)" class="retry-btn"> Retry </button>
+
+</div>
+
+
+}
+
+@else if (product$ | async; as product){
 <div class="product-card">
 
     <div class="product-image"><img [src]="product.imageUrl" class="product-link" /> </div>
@@ -18,9 +29,18 @@
         <p class="product-desc">{{category}}</p>
 
     </div>
-    <button class="add-to-cart-btn" (click)="addToCart(product)" [disabled]="productService.isInCart(product)">
-        {{productService.isInCart(product) ? "item already in cart" : "Add to Cart"}} </button>
 
-    <button class="add-to-cart-btn" (click)="removeFromCart(product.id)"> Delete </button>
+
+    <button *ngIf="!stateService.setIsItInCart(product.id)" class="add-to-cart-btn" (click)="addToCart(product)">
+        Add To cart
+    </button>
+
+    <button *ngIf="stateService.setIsItInCart(product.id)" class="remove-from-cart-btn" (click)="remove(product.id)">
+        Remove from cart
+    </button>
+
+
+
 </div>
+
 }

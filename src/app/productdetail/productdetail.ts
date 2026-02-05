@@ -1,48 +1,56 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductService } from '../services/product-service';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/model';
 import { CommonModule } from '@angular/common';
+import { StateService } from '../services/state-service';
+import { AsyncPipe } from '@angular/common';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-productdetail',
-  imports: [CommonModule],
+  imports: [CommonModule, AsyncPipe, NgIf],
   templateUrl: './productdetail.html',
   styleUrl: './productdetail.css',
 })
-export class Productdetail implements OnInit {
-  product?: Product;
+export class Productdetail implements OnInit, OnDestroy {
+  product$;
+  loading$;
+  error$;
   category?: string;
-  loading = signal<boolean>(true);
-  error = signal<string>('');
+  productId!: number;
 
   constructor(
     public productService: ProductService,
+    public stateService: StateService,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+    this.product$ = this.stateService.selectedProduct$;
+    this.loading$ = this.stateService.loading$;
+    this.error$ = this.stateService.error$;
+  }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.productId = Number(this.route.snapshot.paramMap.get('id'));
+
     this.category = this.route.snapshot.queryParamMap.get('category') || undefined;
 
-    this.loading.set(true);
-    this.productService.getProductById(id).subscribe({
-      next: (data) => {
-        this.product = data;
-        this.loading.set(false);
-      },
-      error: (err) => {
-        this.error.set('Product not Found');
-        this.loading.set(false);
-      },
-    });
+    this.productService.getProductById(this.productId);
+  }
+
+  ngOnDestroy(): void {
+    this.stateService.clearError();
   }
 
   addToCart(product: Product) {
-    this.productService.addToCart(product);
+    this.stateService.setToCart(product);
   }
 
-  removeFromCart(productId: number) {
-    this.productService.removeFromCart(productId);
+  remove(id: number) {
+    this.stateService.removeFromCart(id);
+  }
+
+  reTry(id: number) {
+    this.productService.getProductById(id);
   }
 }

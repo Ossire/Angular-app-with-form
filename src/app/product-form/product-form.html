@@ -1,3 +1,9 @@
+@if (error$ | async; as error) {
+{{error}} <button type="button" class="retry-btn" (click)="reTry()">Try again </button>
+}
+
+
+@else {
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="product-form">
 
     <h2>Create Product</h2>
@@ -102,3 +108,4 @@
     </div>
 
 </form>
+}

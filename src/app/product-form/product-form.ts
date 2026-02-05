@@ -4,6 +4,7 @@ import { FormArray, FormGroup, FormBuilder, ReactiveFormsModule, Validators } fr
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product-service';
 import { Product } from '../models/model';
+import { StateService } from '../services/state-service';
 
 @Component({
   selector: 'app-product-form',
@@ -12,13 +13,16 @@ import { Product } from '../models/model';
   styleUrl: './product-form.css',
 })
 export class ProductForm {
+  error$;
   form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
     public router: Router,
+    private stateService: StateService,
   ) {
+    this.error$ = this.stateService.error$;
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
@@ -82,7 +86,7 @@ export class ProductForm {
     };
 
     this.productService.createProduct(newProduct).subscribe({
-      next: (created) => {
+      next: () => {
         alert('Product created successfully ');
         this.form.reset({
           name: '',
@@ -98,9 +102,12 @@ export class ProductForm {
         this.router.navigate(['/products']);
       },
       error: (err) => {
-        console.error(err);
-        alert('Failed to create product.');
+        this.stateService.setError(err.message);
       },
     });
+  }
+
+  reTry() {
+    this.stateService.clearError();
   }
 }

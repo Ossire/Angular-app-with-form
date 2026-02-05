@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+
 * {
   margin: 0;
   padding: 0;
@@ -8,4 +8,145 @@
 
 body {
   background: #f4f6f9;
+}
+
+
+.error-message {
+  --red: #e63946;
+  --purple-start: #7b2cbf;
+  --purple-end: #9d4edd;
+
+  display: block;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+
+  color: #7a0f18;
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  line-height: 1.4;
+
+  background: linear-gradient(
+    135deg,
+    rgba(230, 57, 70, 0.12),
+    rgba(157, 78, 221, 0.12)
+  );
+
+  border-left: 4px solid var(--red);
+  border-radius: 6px;
+
+  animation: fadeIn 0.2s ease-in;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+.retry-btn {
+  margin-top: 0.75rem;
+
+  padding: 0.55rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  color: #fff;
+  background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+
+.retry-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(123, 44, 191, 0.35);
+  opacity: 0.95;
+}
+
+.retry-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(123, 44, 191, 0.25);
+}
+
+
+.retry-btn:focus-visible {
+  outline: 2px solid rgba(157, 78, 221, 0.6);
+  outline-offset: 2px;
+}
+
+
+@media (max-width: 600px) {
+  .retry-btn {
+    width: 100%;
+    padding: 0.65rem;
+    font-size: 0.95rem;
+  }
+}
+
+
+.spinner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(244, 246, 249, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+.spinner {
+  width: 72px;
+  height: 72px;
+
+  border-radius: 50%;
+  border: 6px solid rgba(123, 44, 191, 0.2);
+  border-top-color: #7b2cbf;
+
+  animation: spin 0.9s linear infinite;
+}
+
+
+.spinner::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(157, 78, 221, 0.25),
+    transparent 60%
+  );
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@media (max-width: 600px) {
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border-width: 5px;
+  }
 }

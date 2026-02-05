@@ -1,16 +1,15 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../models/model';
-import { map, Observable } from 'rxjs';
+import { catchError, finalize, map, Observable } from 'rxjs';
+import { StateService } from './state-service';
+import { ErrorService } from './error-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
   //pls ignore the notes all over the place, i added them to help me remember my code implementation whenever i want to relearn a concept
-
-  //text being typed into input field & text that can prepopulate the input field(two way data binding)
-  searchedProduct = signal<string>('');
 
   //cart counter
   cartCount = 0;
@@ -21,66 +20,71 @@ export class ProductService {
   //array to store ids of clicked card object
   cartItemsId: number[] = [];
 
-  //empty product array at beginning that shows before search filter method is applied
-  private _product = signal<Product[]>([]);
-  product = this._product.asReadonly();
-
-  //array of objects to display when products are being searched for
-  private _filteredArray = signal<Product[]>([]);
-  filteredArray = this._filteredArray.asReadonly();
-
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private stateService: StateService,
+    private errorHandler: ErrorService,
+  ) {}
 
   createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>('http://localhost:3000/products', product);
+    return this.http
+      .post<Product>('http://localhost:3000/prdcts', product)
+      .pipe(catchError((error) => this.errorHandler.handleError(error)));
   }
 
   //fetches all products from the db.json file link
   getAllProducts() {
-    this.http.get<Product[]>('http://localhost:3000/products').subscribe((data) => {
-      this._product.set(data);
-      this._filteredArray.set(this._product());
-      //console.log(data);
-    });
+    this.stateService.setLoading(true);
+    this.http
+      .get<Product[]>('http://localhost:3000/gproducts')
+      .pipe(
+        catchError((error) => this.errorHandler.handleError(error)),
+        finalize(() => this.stateService.setLoading(false)),
+      )
+      .subscribe({
+        next: (data) => this.stateService.setProducts(data),
+        error: (err) => {
+          this.stateService.setError(err.message);
+        },
+      });
   }
 
   //fetch product for me by id placeholder
-  getProductById(id: number): Observable<Product> {
-    return this.http.get<Product>(`http://localhost:3000/products/${id}`);
+  getProductById(id: number) {
+    this.stateService.setLoading(true);
+    this.http
+      .get<Product>(`http://localhost:3000/badbadproducts/${id}`)
+      .pipe(
+        catchError((error) => this.errorHandler.handleError(error)),
+        finalize(() => this.stateService.setLoading(false)),
+      )
+      .subscribe({
+        next: (data) => {
+          this.stateService.setProduct(data);
+        },
+        error: (err) => {
+          this.stateService.setError(err.message);
+        },
+      });
   }
 
-  //method to call when a text is typed in the input field
-  //it filters the array objects by name and returns the one true for the condition
-  filterMyArrays() {
-    this._filteredArray.set(
-      this._product().filter((product) =>
-        product.name.toLowerCase().includes(this.searchedProduct().toLowerCase()),
-      ),
-    );
+  reloadProducts() {
+    this.getAllProducts();
   }
 
-  //adds item object{} to cart array[{}] when clicked and also increases count
-  addToCart(product: Product) {
-    this.cartItems.push(product);
-    this.cartItemsId.push(product.id);
-    //this.cartCount.update((prev) => prev + 1);
-    this.cartCount = this.cartItemsId.length;
+  reloadProduct(id: number) {
+    this.getProductById(id);
   }
-
   //remove item from cart array using id
-  removeFromCart(productId: number) {
-    this.cartItems = this.cartItems.filter((product) => product.id !== productId);
-    this.cartItemsId = this.cartItemsId.filter((id) => id !== productId);
-    this.cartCount = this.cartItemsId.length;
-    //this.cartCount.update((prev) => prev - 1);
-  }
+  // removeFromCart(productId: number) {
+  //   this.cartItems = this.cartItems.filter((product) => product.id !== productId);
+  //   this.cartItemsId = this.cartItemsId.filter((id) => id !== productId);
+  //   this.cartCount = this.cartItemsId.length;
+  //   //this.cartCount.update((prev) => prev - 1);
+  // }
 
   //if the cartItemsId Arrayid includes the id of card just clicked(product.id)
-  isInCart(product: Product) {
-    return this.cartItemsId.includes(product.id);
-  }
-
-  // isNotInCart(productId: Product) {
-  //   return this.cartItems.filter((id) => id !== productId);
+  // isInCart(product: Product) {
+  //   return this.cartItemsId.includes(product.id);
   // }
 }
