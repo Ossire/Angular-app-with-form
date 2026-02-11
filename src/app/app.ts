@@ -4,10 +4,11 @@ import { Navbar } from './navbar/navbar';
 import { Login } from './login/login';
 import { AuthService } from './services/auth-service';
 import { AsyncPipe } from '@angular/common';
-
+import { NotFound } from '@angular/core/primitives/di';
+import { Notfound } from './notfound/notfound';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, Navbar, Login, AsyncPipe],
+  imports: [RouterOutlet, RouterLink, Navbar, Login, AsyncPipe, Notfound],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

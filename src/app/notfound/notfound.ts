@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-notfound',
@@ -7,4 +7,6 @@ import { RouterLink } from '@angular/router';
   templateUrl: './notfound.html',
   styleUrl: './notfound.css',
 })
-export class Notfound {}
+export class Notfound {
+  constructor(private route: Router) {}
+}

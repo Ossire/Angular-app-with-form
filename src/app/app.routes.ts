@@ -14,6 +14,7 @@ export const routes: Routes = [
   { path: 'products/new', component: ProductForm, canActivate: [authGuard] },
   { path: 'products/:id', component: Productdetail, canActivate: [authGuard] },
   { path: 'login', component: Login },
-  { path: 'cart', component: Cartcard, canActivate: [authGuard] },
-  { path: '**', redirectTo: '/products' },
+  { path: 'cart', component: Cartcard },
+  { path: 'notfound', component: Notfound },
+  { path: '**', component: Notfound },
 ];

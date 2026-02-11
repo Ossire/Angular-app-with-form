@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth-service';
   styleUrl: './login.css',
 })
 export class Login {
+  state;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -19,7 +20,9 @@ export class Login {
   constructor(
     private router: Router,
     private authService: AuthService,
-  ) {}
+  ) {
+    this.state = this.authService.loginStatus;
+  }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
