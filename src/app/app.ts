@@ -1,13 +1,20 @@
-import { Component, signal, Input, Output, EventEmitter } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { Navbar } from './navbar/navbar';
+import { Login } from './login/login';
+import { AuthService } from './services/auth-service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, Navbar],
+  imports: [RouterOutlet, RouterLink, Navbar, Login, AsyncPipe],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('seamfix-angular-app');
+
+  authService = inject(AuthService);
+
+  isauthenticated$ = this.authService.isAuthenticated$;
 }

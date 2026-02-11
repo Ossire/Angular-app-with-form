@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../models/model';
 import { catchError, finalize, map, Observable } from 'rxjs';
@@ -28,7 +28,7 @@ export class ProductService {
 
   createProduct(product: Product): Observable<Product> {
     return this.http
-      .post<Product>('http://localhost:3000/prdcts', product)
+      .post<Product>('http://localhost:3000/products', product)
       .pipe(catchError((error) => this.errorHandler.handleError(error)));
   }
 
@@ -36,7 +36,7 @@ export class ProductService {
   getAllProducts() {
     this.stateService.setLoading(true);
     this.http
-      .get<Product[]>('http://localhost:3000/gproducts')
+      .get<Product[]>('http://localhost:3000/products')
       .pipe(
         catchError((error) => this.errorHandler.handleError(error)),
         finalize(() => this.stateService.setLoading(false)),
@@ -53,7 +53,7 @@ export class ProductService {
   getProductById(id: number) {
     this.stateService.setLoading(true);
     this.http
-      .get<Product>(`http://localhost:3000/badbadproducts/${id}`)
+      .get<Product>(`http://localhost:3000/products/${id}`)
       .pipe(
         catchError((error) => this.errorHandler.handleError(error)),
         finalize(() => this.stateService.setLoading(false)),

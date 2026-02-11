@@ -8,7 +8,7 @@ import { AsyncPipe, CommonModule, NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-productcard',
-  imports: [RouterLink, AsyncPipe, NgIf, CommonModule, NgFor],
+  imports: [RouterLink, AsyncPipe, CommonModule],
   templateUrl: './productcard.html',
   styleUrl: './productcard.css',
 })

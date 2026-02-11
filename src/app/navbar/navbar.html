@@ -10,10 +10,11 @@
         <app-searchinput />
 
         <div class="nav-links-cart">
-            <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }"> Home</a>
+            <!-- <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }"> Home</a> -->
             <a routerLink="/products" routerLinkActive="active-link"
                 [routerLinkActiveOptions]="{ exact: true }">Products</a>
             <a routerLink="/products/new" routerLinkActive="active-link">Add</a>
+            <button (click)="logOut()">Logout</button>
 
             <div class="cart">
 
