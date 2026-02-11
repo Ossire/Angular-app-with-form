@@ -33,9 +33,9 @@ export class AuthService {
   }
 
   loggedOut() {
-    localStorage.removeItem('email');
+    localStorage.removeItem('userEmail');
     this.isAuthenticated.next(false);
     this.router.navigate(['/login']);
-    console.log(this.isAuthenticated);
+    console.log(this.isAuthenticated.value);
   }
 }

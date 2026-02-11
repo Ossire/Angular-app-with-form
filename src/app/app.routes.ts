@@ -12,8 +12,8 @@ export const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
   { path: 'products', component: Productcard, canActivate: [authGuard] },
   { path: 'products/new', component: ProductForm, canActivate: [authGuard] },
-  { path: 'products/:id', component: Productdetail, canActivateChild: [authGuard] },
+  { path: 'products/:id', component: Productdetail, canActivate: [authGuard] },
   { path: 'login', component: Login },
   { path: 'cart', component: Cartcard, canActivate: [authGuard] },
-  { path: '**', redirectTo: '/login' },
+  { path: '**', redirectTo: '/products' },
 ];
