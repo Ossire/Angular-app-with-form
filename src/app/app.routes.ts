@@ -1,20 +1,37 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
-import { Productcard } from './productcard/productcard';
-import { Notfound } from './notfound/notfound';
-import { Productdetail } from './productdetail/productdetail';
-import { Cartcard } from './cartcard/cartcard';
-import { ProductForm } from './product-form/product-form';
-import { Login } from './login/login';
 import { authGuard } from './guards/auth-guard-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
-  { path: 'products', component: Productcard, canActivate: [authGuard] },
-  { path: 'products/new', component: ProductForm, canActivate: [authGuard] },
-  { path: 'products/:id', component: Productdetail, canActivate: [authGuard] },
-  { path: 'login', component: Login },
-  { path: 'cart', component: Cartcard },
-  { path: 'notfound', component: Notfound },
-  { path: '**', component: Notfound },
+  {
+    path: 'products',
+    loadComponent: () => import('./productcard/productcard').then((m) => m.Productcard),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'products/new',
+    loadComponent: () => import('./product-form/product-form').then((m) => m.ProductForm),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'products/:id',
+    loadComponent: () => import('./productdetail/productdetail').then((m) => m.Productdetail),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login').then((m) => m.Login),
+  },
+  {
+    path: 'cart',
+    loadComponent: () => import('./cartcard/cartcard').then((m) => m.Cartcard),
+  },
+  {
+    path: 'notfound',
+    loadComponent: () => import('./notfound/notfound').then((m) => m.Notfound),
+  },
+  {
+    path: '**',
+    loadComponent: () => import('./notfound/notfound').then((m) => m.Notfound),
+  },
 ];

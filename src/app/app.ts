@@ -8,7 +8,7 @@ import { NotFound } from '@angular/core/primitives/di';
 import { Notfound } from './notfound/notfound';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, Navbar, Login, AsyncPipe, Notfound],
+  imports: [RouterOutlet, Navbar, AsyncPipe],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
