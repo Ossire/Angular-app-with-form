@@ -18,7 +18,7 @@ export class Productdetail implements OnInit, OnDestroy {
   loading$;
   error$;
   category?: string;
-  productId!: number;
+  productId!: string;
 
   constructor(
     public productService: ProductService,
@@ -31,7 +31,7 @@ export class Productdetail implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.productId = Number(this.route.snapshot.paramMap.get('id'));
+    this.productId = this.route.snapshot.paramMap.get('id') as string;
 
     this.category = this.route.snapshot.queryParamMap.get('category') || undefined;
 
@@ -46,11 +46,11 @@ export class Productdetail implements OnInit, OnDestroy {
     this.stateService.setToCart(product);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     this.stateService.removeFromCart(id);
   }
 
-  reTry(id: number) {
+  reTry(id: string) {
     this.productService.getProductById(id);
   }
 }

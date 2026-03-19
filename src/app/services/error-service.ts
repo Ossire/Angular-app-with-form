@@ -12,13 +12,16 @@ export class ErrorService {
     if (errorhttp.error instanceof ErrorEvent) {
       errorMessage = `Network error: ${errorhttp.error.message} `;
     } else {
-      // It's a "Server-side" error (the database said no)
       switch (errorhttp.status) {
         case 400:
           errorMessage = 'Bad Request. Please check your input.';
           break;
         case 401:
-          errorMessage = 'You are not logged in!';
+          if (errorhttp.url && errorhttp.url.includes('/auth/login')) {
+            errorMessage = 'Invalid email or password. Please try again.';
+          } else {
+            errorMessage = 'You are not logged in or your session expired!';
+          }
           break;
         case 403:
           errorMessage = 'Access denied. You cannot do that.';

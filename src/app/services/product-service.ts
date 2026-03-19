@@ -4,6 +4,7 @@ import { Product } from '../models/model';
 import { catchError, finalize, map, Observable } from 'rxjs';
 import { StateService } from './state-service';
 import { ErrorService } from './error-service';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class ProductService {
   //array to store ids of clicked card object
   cartItemsId: number[] = [];
 
+  envFile = environment;
   constructor(
     private http: HttpClient,
     private stateService: StateService,
@@ -28,7 +30,7 @@ export class ProductService {
 
   createProduct(product: Product): Observable<Product> {
     return this.http
-      .post<Product>('http://localhost:3000/products', product)
+      .post<Product>(this.envFile.apiUrl, product)
       .pipe(catchError((error) => this.errorHandler.handleError(error)));
   }
 
@@ -36,7 +38,7 @@ export class ProductService {
   getAllProducts() {
     this.stateService.setLoading(true);
     this.http
-      .get<Product[]>('http://localhost:3000/products')
+      .get<Product[]>(this.envFile.apiUrl)
       .pipe(
         catchError((error) => this.errorHandler.handleError(error)),
         finalize(() => this.stateService.setLoading(false)),
@@ -50,10 +52,10 @@ export class ProductService {
   }
 
   //fetch product for me by id placeholder
-  getProductById(id: number) {
+  getProductById(id: string) {
     this.stateService.setLoading(true);
     this.http
-      .get<Product>(`http://localhost:3000/products/${id}`)
+      .get<Product>(`${this.envFile.apiUrl}/${id}`)
       .pipe(
         catchError((error) => this.errorHandler.handleError(error)),
         finalize(() => this.stateService.setLoading(false)),
@@ -72,7 +74,7 @@ export class ProductService {
     this.getAllProducts();
   }
 
-  reloadProduct(id: number) {
+  reloadProduct(id: string) {
     this.getProductById(id);
   }
   //remove item from cart array using id

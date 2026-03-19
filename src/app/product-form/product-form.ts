@@ -74,7 +74,6 @@ export class ProductForm {
 
     const raw = this.form.value;
     const newProduct: Product = {
-      id: 0,
       name: raw.name,
       description: raw.description,
       price: Number(raw.price),

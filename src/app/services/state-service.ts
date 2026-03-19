@@ -81,13 +81,13 @@ export class StateService {
   setSearchedText(value: string) {
     this.searchedText.set(value);
   }
-  removeFromCart(productId: number) {
+  removeFromCart(productId: string) {
     const latestCart = this.appState.cart.filter((p) => p.id !== productId);
 
     this.state.next({ ...this.appState, cart: latestCart });
   }
 
-  setIsItInCart(productId: number) {
+  setIsItInCart(productId: string) {
     return this.appState.cart.some((item) => item.id === productId);
   }
 }

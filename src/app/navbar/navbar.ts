@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { Searchinput } from '../searchinput/searchinput';
 import { ProductService } from '../services/product-service';
 import { StateService } from '../services/state-service';
@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth-service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [Searchinput, RouterLink, RouterLinkActive, AsyncPipe],
+  imports: [Searchinput, RouterLink, RouterLinkActive, AsyncPipe, RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })

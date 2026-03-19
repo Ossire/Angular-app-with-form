@@ -30,14 +30,14 @@
             </div>
         </a>
 
-        @if (!stateService.setIsItInCart(product.id)) {
+        @if (!stateService.setIsItInCart(product.id!)) {
         <button class="add-to-cart-btn" (click)="addToCart(product)">
             Add To cart
         </button>
         }
 
-        @if (stateService.setIsItInCart(product.id)) {
-        <button class="remove-from-cart-btn" (click)="remove(product.id)">
+        @if (stateService.setIsItInCart(product.id!)) {
+        <button class="remove-from-cart-btn" (click)="remove(product.id!)">
             Remove from cart
         </button>
         }

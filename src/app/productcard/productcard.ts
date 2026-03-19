@@ -38,7 +38,7 @@ export class Productcard implements OnInit {
   trackById(index: number, product: Product) {
     return product.id;
   }
-  remove(id: number) {
+  remove(id: string) {
     this.stateService.removeFromCart(id);
   }
 

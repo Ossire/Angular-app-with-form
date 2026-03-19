@@ -31,11 +31,11 @@
     </div>
 
 
-    <button *ngIf="!stateService.setIsItInCart(product.id)" class="add-to-cart-btn" (click)="addToCart(product)">
+    <button *ngIf="!stateService.setIsItInCart(product.id!)" class="add-to-cart-btn" (click)="addToCart(product)">
         Add To cart
     </button>
 
-    <button *ngIf="stateService.setIsItInCart(product.id)" class="remove-from-cart-btn" (click)="remove(product.id)">
+    <button *ngIf="stateService.setIsItInCart(product.id!)" class="remove-from-cart-btn" (click)="remove(product.id!)">
         Remove from cart
     </button>
 

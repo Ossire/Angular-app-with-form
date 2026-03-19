@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ErrorService } from './error-service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,11 +11,23 @@ export class AuthService {
   private isAuthenticated = new BehaviorSubject<boolean>(this.hasToken());
   public isAuthenticated$: Observable<boolean> = this.isAuthenticated.asObservable();
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private errorService: ErrorService,
+  ) {}
 
-  logIn(email: string) {
-    localStorage.setItem('userEmail', email);
-    this.isAuthenticated.next(true);
+  logIn(payload: any): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/api/v1/auth/login', payload).pipe(
+      tap((response) => {
+        localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('userEmail', payload.email);
+        this.isAuthenticated.next(true);
+      }),
+      catchError((error) => {
+        return this.errorService.handleError(error);
+      }),
+    );
   }
 
   get loginStatus() {
@@ -21,7 +35,7 @@ export class AuthService {
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('userEmail');
+    return !!localStorage.getItem('access_token');
   }
 
   isLoggedIn(): boolean {
@@ -33,6 +47,7 @@ export class AuthService {
   }
 
   loggedOut() {
+    localStorage.removeItem('access_token');
     localStorage.removeItem('userEmail');
     this.isAuthenticated.next(false);
     this.router.navigate(['/login']);
