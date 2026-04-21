@@ -3,9 +3,14 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  category: string;
+  categoryId: number;
   inStock: boolean;
   rating: number;
   imageUrl: string;
   properties?: { color: string; weight: string }[];
+}
+
+export interface Category {
+  id: number;
+  name: string;
 }

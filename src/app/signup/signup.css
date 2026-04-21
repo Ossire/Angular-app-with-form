@@ -1,0 +1,126 @@
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.signup-card {
+  background-color: white;
+  width: 100%;
+  max-width: 450px; /* Slightly wider to fit two names */
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.card-header {
+  text-align: center;
+  padding: 30px 20px 10px;
+}
+
+.card-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.card-header p {
+  color: #666;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.form-content {
+  padding: 20px 30px;
+}
+
+/* NEW: Flexbox row for First & Last Name */
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.half-width {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #8e2de2; 
+  box-shadow: 0 0 0 2px rgba(142, 45, 226, 0.2);
+}
+
+/* Error text styling */
+.error-text {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Info text for loading state */
+.info-text {
+  color: #8e2de2;
+  font-size: 12px;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  margin-top: 10px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.card-footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+}
+
+.card-footer p { margin: 0; color: #555; }
+.card-footer a { color: #8e2de2; font-weight: bold; text-decoration: none; }
+.card-footer a:hover { text-decoration: underline; }

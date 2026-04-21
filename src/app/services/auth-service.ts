@@ -30,6 +30,17 @@ export class AuthService {
     );
   }
 
+  signUp(payload: any): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/api/v1/auth/signup', payload).pipe(
+      tap((response) => {
+        alert('User registration succesful, you can now login');
+      }),
+      catchError((error) => {
+        return this.errorService.handleError(error);
+      }),
+    );
+  }
+
   get loginStatus() {
     return this.isAuthenticated.value;
   }

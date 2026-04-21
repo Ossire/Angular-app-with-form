@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Product } from '../models/model';
+import { Product, Category } from '../models/model';
 import { catchError, finalize, map, Observable } from 'rxjs';
 import { StateService } from './state-service';
 import { ErrorService } from './error-service';
@@ -10,15 +10,10 @@ import { environment } from '../../environments/environments';
   providedIn: 'root',
 })
 export class ProductService {
-  //pls ignore the notes all over the place, i added them to help me remember my code implementation whenever i want to relearn a concept
-
-  //cart counter
   cartCount = 0;
 
-  //array to store clicked items object into the cart
   cartItems: Product[] = [];
 
-  //array to store ids of clicked card object
   cartItemsId: number[] = [];
 
   envFile = environment;
@@ -34,7 +29,6 @@ export class ProductService {
       .pipe(catchError((error) => this.errorHandler.handleError(error)));
   }
 
-  //fetches all products from the db.json file link
   getAllProducts() {
     this.stateService.setLoading(true);
     this.http
@@ -51,7 +45,6 @@ export class ProductService {
       });
   }
 
-  //fetch product for me by id placeholder
   getProductById(id: string) {
     this.stateService.setLoading(true);
     this.http
@@ -77,16 +70,8 @@ export class ProductService {
   reloadProduct(id: string) {
     this.getProductById(id);
   }
-  //remove item from cart array using id
-  // removeFromCart(productId: number) {
-  //   this.cartItems = this.cartItems.filter((product) => product.id !== productId);
-  //   this.cartItemsId = this.cartItemsId.filter((id) => id !== productId);
-  //   this.cartCount = this.cartItemsId.length;
-  //   //this.cartCount.update((prev) => prev - 1);
-  // }
 
-  //if the cartItemsId Arrayid includes the id of card just clicked(product.id)
-  // isInCart(product: Product) {
-  //   return this.cartItemsId.includes(product.id);
-  // }
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(this.envFile.categoryUrl);
+  }
 }

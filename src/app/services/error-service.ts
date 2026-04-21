@@ -29,6 +29,13 @@ export class ErrorService {
         case 404:
           errorMessage = 'Not found. We could not find that item.';
           break;
+        case 409:
+          if (errorhttp.url && errorhttp.url.includes('/auth/signup')) {
+            errorMessage = 'Email already exists. Pls use another Email';
+          } else {
+            errorMessage = 'Error ocuured during signup';
+          }
+          break;
         case 500:
           errorMessage = 'Server error. Our robots are fixing it.';
           break;

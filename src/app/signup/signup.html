@@ -1,0 +1,80 @@
+<div class="signup-container">
+    <div class="signup-card">
+
+        <div class="card-header">
+            <h2>Create Account</h2>
+            <p>Join the Ecommerce shop today.</p>
+        </div>
+
+        @if (errorMessage) {
+        <div
+            style="color: red; background: #ffe6e6; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+            {{ errorMessage }}
+        </div>
+        }
+
+
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="form-content">
+
+            <div class="form-row">
+                <div class="form-group half-width">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" formControlName="firstName" placeholder="John">
+                    @if (signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched) {
+                    <small class="error-text">First name required.</small>
+                    }
+                </div>
+
+                <div class="form-group half-width">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" formControlName="lastName" placeholder="Doe">
+                    @if (signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched) {
+                    <small class="error-text">Last name required.</small>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" formControlName="email" placeholder="john@example.com">
+
+                @if (signupForm.get('email')?.touched) {
+
+                @if (signupForm.get('email')?.hasError('required')) {
+                <small class="error-text">Email is required.</small>
+                }
+                @else if (signupForm.get('email')?.hasError('email')) {
+                <small class="error-text">Please enter a valid email format.</small>
+                }
+                @else if (signupForm.get('email')?.hasError('emailExists')) {
+                <small class="error-text">This email is already registered.</small>
+                }
+
+                }
+
+                @if (signupForm.get('email')?.pending) {
+                <small class="info-text">Checking email availability...</small>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" formControlName="password" placeholder="At least 6 characters">
+
+                @if (signupForm.get('password')?.invalid && signupForm.get('password')?.touched) {
+                <small class="error-text">Password must be at least 6 characters.</small>
+                }
+            </div>
+
+            <button type="submit" class="submit-btn" [disabled]="signupForm.pending">
+                Sign Up
+            </button>
+
+        </form>
+
+        <div class="card-footer">
+            <p>Already have an account? <a routerLink="/login">Log In</a></p>
+        </div>
+
+    </div>
+</div>

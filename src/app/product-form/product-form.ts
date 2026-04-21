@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormGroup, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product-service';
-import { Product } from '../models/model';
+import { Product, Category } from '../models/model';
 import { StateService } from '../services/state-service';
 
 @Component({
@@ -12,9 +12,10 @@ import { StateService } from '../services/state-service';
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
 })
-export class ProductForm {
+export class ProductForm implements OnInit {
   error$;
   form: FormGroup;
+  categories = signal<Category[]>([]);
 
   constructor(
     private fb: FormBuilder,
@@ -27,7 +28,7 @@ export class ProductForm {
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [null, [Validators.required, Validators.min(50)]],
-      category: ['', Validators.required],
+      categoryId: [null, Validators.required],
       imageUrl: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/i)]],
       inStock: [true],
       rating: [0, [Validators.required, Validators.min(0), Validators.max(5)]],
@@ -66,6 +67,18 @@ export class ProductForm {
     });
   }
 
+  ngOnInit(): void {
+    this.productService.getCategories().subscribe({
+      next: (data) => {
+        console.log(' SUCCESS! Data received:', data);
+        this.categories.set(data);
+      },
+      error: (err) => {
+        console.error('2. ERROR! Request failed:', err);
+      },
+    });
+  }
+
   onSubmit() {
     if (this.form.invalid) {
       this.markAllTouched(this.form);
@@ -73,11 +86,13 @@ export class ProductForm {
     }
 
     const raw = this.form.value;
+
+    console.log('Raw Form Data:', raw);
     const newProduct: Product = {
       name: raw.name,
       description: raw.description,
       price: Number(raw.price),
-      category: raw.category,
+      categoryId: Number(raw.categoryId),
       imageUrl: raw.imageUrl,
       inStock: raw.inStock,
       rating: Number(raw.rating),
@@ -91,8 +106,8 @@ export class ProductForm {
           name: '',
           description: '',
           price: null,
-          category: '',
-          imageUrl: '',
+          categoryId: '',
+          imageUrl: null,
           inStock: true,
           rating: 0,
           properties: [{ color: '', weight: '' }],

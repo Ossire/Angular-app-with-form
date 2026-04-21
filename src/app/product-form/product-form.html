@@ -41,10 +41,15 @@
 
     <label>
         Category
-        <input type="text" formControlName="category" />
+        <select formControlName="categoryId">
+            <option [ngValue]="null" disabled>Select a Category...</option>
+            @for (cat of categories(); track cat.id) {
+            <option [ngValue]="cat.id">{{ cat.name }}</option>
+            }
+        </select>
     </label>
-    <div class="error" *ngIf="form.get('category')?.touched && form.get('category')?.invalid">
-        <div *ngIf="form.get('category')?.errors?.['required']">Category is required.</div>
+    <div class="error" *ngIf="form.get('categoryId')?.touched && form.get('categoryId')?.invalid">
+        <div *ngIf="form.get('categoryId')?.errors?.['required']">Category is required.</div>
     </div>
 
 
